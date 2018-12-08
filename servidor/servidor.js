@@ -1,8 +1,9 @@
 //paquetes necesarios para el proyecto
+const env = require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const buscadorPelicula = require('./controladores/buscadorPelicula/../buscadorPelicula');
+const buscadorPelicula = require('./controladores/buscadorPelicula');
 
 const app = express();
 
