@@ -1,14 +1,20 @@
 {
-  "name": "servidor",
+  "name": "que-veo-hoy-recursos-2",
   "version": "1.0.0",
   "description": "",
-  "main": "servidor.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "main": "conexionbd.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon servidor.js"
   },
   "author": "Jorge Roldan",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "five": "^0.8.0",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.7"
+  }
 }

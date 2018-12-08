@@ -25,4 +25,3 @@ to run this project first you have to:
 Done!
 
 [Data Model](https://www.lucidchart.com/documents/edit/4fed2802-18e4-4dc0-bd8b-657f302c3f3d/0 "Data Model: Que veo hoy")
-# que_veo_hoy
