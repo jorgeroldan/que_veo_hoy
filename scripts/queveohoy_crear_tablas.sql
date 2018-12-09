@@ -18,6 +18,8 @@ CREATE TABLE `pelicula` (
 
 -- Source pelicula.sql
 
+ALTER TABLE `pelicula` ADD COLUMN `genero_id` int NOT NULL;
+
 -- Tabla Generos: 
 CREATE TABLE `genero` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,7 +27,6 @@ CREATE TABLE `genero` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-ALTER TABLE `pelicula` ADD COLUMN `genero_id` int NOT NULL;
 
 -- Tabla Actores: 
 CREATE TABLE `actor` (
@@ -43,6 +44,8 @@ CREATE TABLE `actor_pelicula` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- Modificación para poder hacer la conexión de la Base de Datos con express
+-- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'
 
 -- Comandos SQL: 
 

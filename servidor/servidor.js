@@ -1,9 +1,8 @@
 //paquetes necesarios para el proyecto
-const env = require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const buscadorPelicula = require('./controladores/buscadorPelicula');
+const controlador = require('./controladores/controlador');
 
 const app = express();
 
@@ -15,9 +14,9 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-app.get('/peliculas', buscadorPelicula.buscarPeliculas);
-// app.get('/peliculas/:id', buscadorPelicula.buscarPelicula);
-// app.get('/generos', buscadorControlador.buscarGeneros);
+app.get('/peliculas', controlador.obtenerPeliculasPorFiltos);
+// app.get('/peliculas/:id', controlador.buscarPelicula);
+app.get('/generos', controlador.obtenerGeneros);
 
 //seteamos el puerto en el cual va a escuchar los pedidos la aplicación
 const puerto = '8080';

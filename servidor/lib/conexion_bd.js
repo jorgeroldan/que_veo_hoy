@@ -1,4 +1,4 @@
-const env = require('dotenv').config();
+require('dotenv').config();
 const mysql = require('mysql');
 
 const connection = mysql.createConnection({
