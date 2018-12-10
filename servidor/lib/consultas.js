@@ -1,7 +1,5 @@
 
-function peliculas(columna_orden,tipo_orden){
 
-}
 
 // Caso 1
 pagina=1

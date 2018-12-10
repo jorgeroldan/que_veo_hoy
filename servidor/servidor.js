@@ -14,8 +14,8 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-app.get('/peliculas', controlador.obtenerPeliculasPorFiltos);
-// app.get('/peliculas/:id', controlador.buscarPelicula);
+app.get('/peliculas', controlador.obtenerPeliculasConFiltros);
+app.get('/peliculas/:id', controlador.obtenerPeliculasPorId);
 app.get('/generos', controlador.obtenerGeneros);
 
 //seteamos el puerto en el cual va a escuchar los pedidos la aplicación
