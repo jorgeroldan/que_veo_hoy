@@ -19,8 +19,9 @@ const con_db = require('../lib/conexion_bd');
 // }
 
 function obtenerPeliculasConFiltros (req, res) {
+    // GUARDAR LOS PARAMETROS DE LA CONSULTA EN VARIABLES REUTILIZABLES EN ESTE SCOPE
     let sql = 'SELECT * FROM pelicula';
-    let sql_;
+    let sqlAdd;
     let titulo = req.query.titulo;
     let anio = req.query.anio;
     let genero = req.query.genero;
@@ -66,7 +67,7 @@ function obtenerPeliculasConFiltros (req, res) {
     sql += ` ORDER BY duracion ${tipoOrden}`;    
     console.log(sql);
   }
-  sql_ = sql;   
+  sqlAdd = sql;   
 
   //PAGINACIÓN Y LIMITE
   sql += ` LIMIT ${(pagina - 1) * cantidad},${cantidad}`;
@@ -79,7 +80,7 @@ function obtenerPeliculasConFiltros (req, res) {
     }
     
     //TOTAL DE PELÍCULAS
-    con_db.query(sql_, (error_, resultado_, ) =>{
+    con_db.query(sqlAdd, (error_, resultado_, ) =>{
       if (error_) {
         console.log("Hubo un error en la consulta", error_.message);
         return res.status(404).send("Hubo un error en la consulta");       
@@ -114,7 +115,7 @@ function obtenerGeneros(req, res){
 }
 
 function obtenerPeliculasPorId (req, res) {
-    // if (req.params.id !== 'recomendacion') {
+    if (req.params.id !== 'recomendacion') {
       let id = req.params.id;     
     
       let sql = `SELECT * FROM pelicula INNER JOIN genero ON genero_id = genero.id WHERE pelicula.id =`+ id
@@ -136,15 +137,66 @@ function obtenerPeliculasPorId (req, res) {
               'genero': resultado[0].nombre,
               'actores': resultado_actor_pelicula         
           };
-      
+          
+          console.log(response.pelicula)
           res.send(JSON.stringify(response));
         }); 
       });
+    }
 }
+
+
+function recomendacionPelicula(req,res){
+    console.log(query)
+    let sql = 'SELECT * FROM pelicula';
+    let sqlConGenero = `SELECT pelicula.id, pelicula.poster, pelicula.trama FROM pelicula`;
+    let genero = req.query.genero;  
+    let anio_inicio = req.query.anio_inicio;
+    let anio_fin = req.query.anio_fin;
+    let puntuacion = req.query.puntuacion;
+
+    let parametros = [
+        {'nombre': 'genero', 'valor': genero, 'query': ` INNER JOIN genero ON pelicula.genero_id = genero.id WHERE genero.nombre = \'${genero}\'`},
+        {'nombre': 'anio_inicio', 'valor': anio_inicio, 'query': ` AND pelicula.anio BETWEEN ${anio_inicio}`, 'querySinGenero': ` WHERE anio BETWEEN ${anio_inicio}`}, 
+        {'nombre': 'anio_fin', 'valor':anio_fin, 'query': ` AND ${anio_fin}`, 'querySinGenero': ` AND ${anio_fin}`}, 
+        {'nombre': 'puntuacion', 'valor': puntuacion, 'query': ` AND pelicula.puntuacion = ${puntuacion}`, 'querySinGenero': ` AND puntuacion = ${puntuacion}`}
+      ];
+    
+      parametros.forEach(e => {
+        if (genero) {
+          if (e.valor !== "" && e.valor !== undefined) {
+            sqlConGenero += e.query;
+            sql = sqlConGenero;
+          }
+        }else if (puntuacion && !anio_inicio && !anio_fin) {
+          sql = `SELECT * FROM pelicula WHERE puntuacion = ${puntuacion}`;
+        }else{
+          if (e.valor !== "" && e.valor !== undefined) {
+            sql += e.querySinGenero;
+          }
+        }
+      });
+      console.log(sql);
+    
+      connection.query(sql, (error, resultado)=> {
+        if (error) {
+            console.log("Hubo un error en la consulta", error.message);
+            return res.status(404).send("Hubo un error en la consulta");
+        } 
+        const response = {
+          'peliculas': resultado
+        };
+    
+        res.send(JSON.stringify(response));
+      });
+
+}
+
 
 module.exports = {
     obtenerPeliculasConFiltros,  
     obtenerGeneros, 
-    obtenerPeliculasPorId
+    obtenerPeliculasPorId, 
+    recomendacionPelicula
 };
 
